@@ -26,13 +26,13 @@ async function createWorld(): Promise<TacticsWorld> {
   // Add all squares from the map
   const worldMap = generateMap();
   worldMap.squares.forEach((square) => {
-    const geometry = new THREE.BoxGeometry(1, square.height, 1);
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = materials[square.topFace];
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
     mesh.position.x = square.x;
-    mesh.position.y = square.height / 2;
-    mesh.position.z = square.y;
+    mesh.position.y = square.y;
+    mesh.position.z = square.z;
   });
 
   // TODO: load objects
