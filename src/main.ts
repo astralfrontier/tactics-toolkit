@@ -19,7 +19,9 @@ const primaryCamera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-primaryCamera.position.z = 5;
+primaryCamera.position.x = -3;
+primaryCamera.position.y = 3.5;
+primaryCamera.position.z = -3;
 activeCamera = primaryCamera;
 
 // TODO: create other cameras
