@@ -1,13 +1,8 @@
 import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import createWorld from "./world";
 
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
-
+// Set up basic rendering shit and attach the scene to the DOM
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -15,19 +10,35 @@ document
   .querySelector<HTMLDivElement>("#app")!
   .appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+// The currently active camera. Reassign to change perspective
+let activeCamera: THREE.Camera;
 
-camera.position.z = 5;
+const primaryCamera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+primaryCamera.position.z = 5;
+activeCamera = primaryCamera;
+
+// TODO: create other cameras
+// https://threejs.org/docs/index.html#api/en/cameras/OrthographicCamera
+
+const controls = new OrbitControls(primaryCamera, renderer.domElement);
+controls.target.set(0, 0, 0);
+controls.enablePan = false;
+controls.enableDamping = true;
+controls.update();
+
+const world = await createWorld();
 
 function animate() {
   requestAnimationFrame(animate);
-
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-
-  renderer.render(scene, camera);
+  world.tick();
+  controls.update();
+  renderer.render(world.scene, activeCamera);
 }
 animate();
+
+// TODO: handle user input
