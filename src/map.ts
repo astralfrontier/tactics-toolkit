@@ -1,7 +1,7 @@
 import { range } from "ramda";
 
 // A reference to a texture or other identifier to know what goes on a given face
-type TacticsFace = string;
+type TacticsModel = string;
 
 interface TacticsMapSquare {
   // Coordinates within the map where this square is found
@@ -10,11 +10,12 @@ interface TacticsMapSquare {
   y: number;
   z: number;
   // TODO: add corner height modifiers
-  topFace: TacticsFace;
+  model: TacticsModel;
   // TODO: add north, south, east, west face references
 }
 
 interface TacticsMap {
+  sky: string | number;
   squares: TacticsMapSquare[];
 }
 
@@ -33,7 +34,7 @@ function generateMap(): TacticsMap {
         x,
         y: height,
         z,
-        topFace: color,
+        model: color,
       };
       squares.push(square);
     });
@@ -43,9 +44,12 @@ function generateMap(): TacticsMap {
     x: 0,
     y: 2,
     z: 0,
-    topFace: "BLACK",
+    model: "BLACK",
   });
-  return { squares };
+  return {
+    sky: 0x87ceeb,
+    squares,
+  };
 }
 
 export default generateMap;

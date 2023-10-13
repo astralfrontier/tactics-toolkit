@@ -20,14 +20,15 @@ const materials: Record<string, THREE.MeshBasicMaterial> = {
 async function createWorld(): Promise<TacticsWorld> {
   const scene = new THREE.Scene();
 
-  // The world is light gray
-  scene.background = new THREE.Color(0xa0a0a0);
-
   // Add all squares from the map
   const worldMap = generateMap();
+
+  // Set the world color based on our map
+  scene.background = new THREE.Color(worldMap.sky);
+
   worldMap.squares.forEach((square) => {
     const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = materials[square.topFace];
+    const material = materials[square.model];
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
     mesh.position.x = square.x;
