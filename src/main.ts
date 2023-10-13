@@ -31,14 +31,14 @@ controls.enablePan = false;
 controls.enableDamping = true;
 controls.update();
 
-const world = await createWorld();
-
-function animate() {
-  requestAnimationFrame(animate);
-  world.tick();
-  controls.update();
-  renderer.render(world.scene, activeCamera);
-}
-animate();
+createWorld().then((world) => {
+  function animate() {
+    requestAnimationFrame(animate);
+    world.tick();
+    controls.update();
+    renderer.render(world.scene, activeCamera);
+  }
+  animate();
+});
 
 // TODO: handle user input
